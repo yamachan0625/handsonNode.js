@@ -34,7 +34,6 @@ app.post('/api/todos', (req, res, next) => {
 });
 
 function completedHandler(completed) {
-  console.log('bbb');
   return (req, res, next) =>
     dataStorage.update(req.params.id, { completed }).then((todo) => {
       if (todo) {
@@ -70,3 +69,15 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(3000);
+
+const dbRun3 = function () {
+  return new Promise((resolve, reject) => {
+    console.log('aaaaaaaaa', ...arguments);
+    db.run.apply(db, [
+      ...arguments,
+      function (err) {
+        err ? reject(err) : resolve(this);
+      },
+    ]);
+  });
+};
