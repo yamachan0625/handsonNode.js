@@ -6,7 +6,7 @@ const db = level(join(__dirname, 'leveldb'));
 
 exports.fetchAll = async () => {
   const result = [];
-  for await (const v of createValueStream({ gt: 'todo:', lt: 'todo;' })) {
+  for await (const v of db.createValueStream({ gt: 'todo:', lt: 'todo;' })) {
     result.push(JSON.parse(v));
   }
   return result;
@@ -40,7 +40,7 @@ exports.update = (id, update) =>
         ...oldTodo,
         ...update,
       };
-      let batch = db.batch().put(`todo:${id}`, JSON.stringify(newTodo));
+      let batch = db.batch().put(`todo:${id}`, JSON.stringify(newTodo)); // completedの値が変化した場合は、セカンダリインデックスも操作する
       if (oldTodo.completed !== newTodo.completed) {
         batch = batch
           .del(`todo-completed-${oldTodo.completed}:${id}`)
@@ -49,7 +49,7 @@ exports.update = (id, update) =>
       return batch.write();
     },
     // ToDoが存在しない場合はnullを返し、それ以外はそのままエラーにする
-    (err) => (err.notFount ? null : Promise.reject(err))
+    (err) => (err.notFound ? null : Promise.reject(err))
   );
 
 exports.remove = (id) =>
@@ -63,5 +63,5 @@ exports.remove = (id) =>
         .write()
         .then(() => id),
     // ToDoが存在しない場合はnullを返し、それ以外はそのままエラーにする
-    (err) => (err.cotFound ? null : Promise.reject(err))
+    (err) => (err.notFound ? null : Promise.reject(err))
   );

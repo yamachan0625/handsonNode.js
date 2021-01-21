@@ -23,7 +23,6 @@ const dbRun = function () {
     ])
   );
 };
-
 const dbAll = promisify(db.all.bind(db));
 
 dbRun(`CREATE TABLE IF NOT EXISTS todo (
@@ -50,8 +49,9 @@ exports.fetchByCompleted = (completed) =>
   );
 
 exports.create = async (todo) => {
+  console.log('createが呼ばれたよ');
   await dbRun(
-    'INSERT INTO todo VALUES (?,?,?)',
+    'INSERT INTO todo VALUES (?, ?, ?)',
     todo.id,
     todo.title,
     todo.completed
