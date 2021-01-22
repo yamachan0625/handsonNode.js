@@ -68,16 +68,4 @@ app.use((err, req, res, next) => {
   res.status(err.statusCode || 500).json({ error: err.message });
 });
 
-app.listen(3000);
-
-const dbRun3 = function () {
-  return new Promise((resolve, reject) => {
-    console.log('aaaaaaaaa', ...arguments);
-    db.run.apply(db, [
-      ...arguments,
-      function (err) {
-        err ? reject(err) : resolve(this);
-      },
-    ]);
-  });
-};
+module.exports = app.listen(3000);
