@@ -64,7 +64,7 @@ for (const dataStorage of ['file-system', 'leveldb']) {
       });
     });
 
-    describe('update()', async () => {
+    describe('update()', () => {
       const todo1 = { id: 'a', title: 'ネーム', completed: false };
       const todo2 = { id: 'b', title: '下書き', completed: false };
       beforeEach(async () => {
