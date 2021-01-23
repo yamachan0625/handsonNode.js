@@ -1,0 +1,18 @@
+# Composeのバージョンの指定(3が最新)
+version: '3'
+services:
+  # サービス名
+  web:
+    # カレントディレクトリにあるDockerfileをビルド
+    build: .
+    # コンテナにマウント(共有)するホストOSのディレクトリの指定
+    volumes:
+      # カレントディレクトリをコンテナの/usr/src/appにマウント
+      - .:/usr/src/app
+      # node_modulesはマウント対象から除外
+      - /usr/src/app/node_modules/
+    ports:
+      # ホストOSの3000ポートをコンテナの3000ポートにつなぐ
+      - 3000:3000
+    # コンテナ起動時に実行するコマンドの指定
+    command: npm run dev
