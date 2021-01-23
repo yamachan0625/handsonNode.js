@@ -46,7 +46,7 @@ exports.update = (id, update) =>
           .del(`todo-completed-${oldTodo.completed}:${id}`)
           .put(`todo-completed-${newTodo.completed}:${id}`, id);
       }
-      return batch.write();
+      return batch.write().then(() => newTodo);
     },
     // ToDoが存在しない場合はnullを返し、それ以外はそのままエラーにする
     (err) => (err.notFound ? null : Promise.reject(err))
