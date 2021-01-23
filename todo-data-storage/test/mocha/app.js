@@ -144,5 +144,126 @@ describe('app', () => {
         assert.deepEqual(res.body, { error: 'create()失敗' });
       });
     });
+
+    describe('PUT /api/todos/:id/completed', () => {
+      it('パスで指定したIDのToDoのcompletedをtrueに設定し、更新後のToDoを返す', async () => {
+        const todo = { id: 'a', title: 'ネーム', completed: true };
+        // スタブの生成
+        sinon.stub(fileSystem, 'update').resolves(todo);
+
+        //リクエストの送信
+        const res = await chai.request(app).put('/api/todos/a/completed');
+
+        // レスポンスのアサーション
+        assert.strictEqual(res.statusCode, 200);
+        assert.deepEqual(res.body, todo);
+
+        // update()の引数のアサーション
+        assert.calledWith(fileSystem.update, 'a', { completed: true });
+      });
+
+      it('update()がnullを返したら404エラーを返す', async () => {
+        // スタブの生成
+        sinon.stub(fileSystem, 'update').resolves(null);
+
+        // リクエストの送信
+        const res = await chai.request(app).put('/api/todos/a/completed');
+
+        // レスポンスのアサーション
+        assert.strictEqual(res.status, 404);
+        assert.deepEqual(res.body, { error: 'Todo not found' });
+      });
+
+      it('update()が失敗したらエラーを返す', async () => {
+        // スタブの生成
+        sinon.stub(fileSystem, 'update').rejects(new Error('update()失敗'));
+        // リクエストの送信
+        const res = await chai.request(app).put('/api/todos/a/completed');
+        // レスポンスのアサーション
+        assert.strictEqual(res.status, 500);
+        assert.deepEqual(res.body, { error: 'update()失敗' });
+      });
+    });
+
+    describe('DELETE /api/todos/:id/completed', () => {
+      it('パスで指定したIDのToDoのcompletedをdalseに設定し、更新後のToDoを返す', async () => {
+        const todo = { id: 'a', title: 'ネーム', completed: false };
+        // スタブの生成
+        sinon.stub(fileSystem, 'update').resolves(todo);
+
+        // リクエストの送信
+        const res = await chai.request(app).delete('/api/todos/a/completed');
+
+        //レスポンスのアサーション
+        assert.strictEqual(res.status, 200);
+        assert.deepEqual(res.body, todo);
+
+        // update()の引数のアサーション
+        assert.calledWith(fileSystem.update, 'a', { completed: false });
+      });
+
+      it('update()がnullを返したら404エラーを返す', async () => {
+        // スタブの生成
+        sinon.stub(fileSystem, 'update').resolves(null);
+
+        // リクエストの送信
+        const res = await chai.request(app).delete('/api/todos/a/completed');
+
+        // レスポンスのアサーション
+        assert.strictEqual(res.status, 404);
+        assert.deepEqual(res.body, { error: 'Todo not found' });
+      });
+
+      it('update()が失敗したらエラーを返す', async () => {
+        // スタブの生成
+        sinon.stub(fileSystem, 'update').rejects(new Error('update()失敗'));
+
+        // リクエストの送信
+        const res = await chai.request(app).delete('/api/todos/a/completed');
+
+        // レスポンスのアサーション
+        assert.strictEqual(res.status, 500);
+        assert.deepEqual(res.body, { error: 'update()失敗' });
+      });
+    });
+
+    describe('DELETE /api/todos/;id', () => {
+      it('パスで指定したIDのToDoを削除する', async () => {
+        // スタブの生成
+        sinon.stub(fileSystem, 'remove').resolves('a');
+
+        // リクエストの送信
+        const res = await chai.request(app).delete('/api/todos/a');
+
+        // レスポンスのアサーション
+        assert.strictEqual(res.status, 204);
+        assert.deepEqual(res.body, {});
+
+        // remove()の引数のアサーション
+        assert.calledWith(fileSystem.remove, 'a');
+      });
+
+      it('remove()がnullを返したら404エラーを返す', async () => {
+        // スタブの生成
+        sinon.stub(fileSystem, 'remove').resolves(null);
+
+        // リクエストの送信
+        const res = await chai.request(app).delete('/api/todos/a');
+
+        // レスポンスのアサーション
+        assert.strictEqual(res.status, 404);
+        assert.deepEqual(res.body, { error: 'ToDo not found' });
+      });
+
+      it('remove()が失敗したらエラーを返す', async () => {
+        // スタブの生成
+        sinon.stub(fileSystem, 'remove').rejects(new Error('remove()失敗'));
+        // リクエストの送信
+        const res = await chai.request(app).delete('/api/todos/a');
+        // レスポンスのアサーション
+        assert.strictEqual(res.status, 500);
+        assert.deepEqual(res.body, { error: 'remove()失敗' });
+      });
+    });
   });
 });

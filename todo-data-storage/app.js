@@ -33,6 +33,7 @@ app.post('/api/todos', (req, res, next) => {
   dataStorage.create(todo).then(() => res.status(201).json(todo), next);
 });
 
+/** Completedの設定、解除の共通処理 */
 function completedHandler(completed) {
   return (req, res, next) =>
     dataStorage.update(req.params.id, { completed }).then((todo) => {
@@ -42,7 +43,7 @@ function completedHandler(completed) {
       const err = new Error('Todo not found');
       err.statusCode = 404;
       next(err);
-    });
+    }, next);
 }
 
 // ToDoのCompletedの設定、解除

@@ -24,11 +24,15 @@ exports.create = (todo) =>
 
 exports.update = async (id, update) => {
   const fileName = `${__dirname}/${id}.json`;
-  return readFile(fileName, 'utf-8').then(
+  return readFile(fileName, 'utf8').then(
     (content) => {
-      const todo = { ...JSON.parse(content), ...update };
+      const todo = {
+        ...JSON.parse(content),
+        ...update,
+      };
       return writeFile(fileName, JSON.stringify(todo)).then(() => todo);
     },
+    // ファイルが存在しない場合はnullを返し、それ以外はそのままエラーにする
     (err) => (err.code === 'ENOENT' ? null : Promise.reject(err))
   );
 };
