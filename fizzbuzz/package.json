@@ -1,0 +1,14 @@
+{
+  "name": "@yamachan0625/fizzbuzz",
+  "version": "1.0.2",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test",
+    "prepublishOnly": "npm test"
+  },
+  "bin": "bin.js",
+  "keywords": [],
+  "author": "",
+  "license": "MIT"
+}
