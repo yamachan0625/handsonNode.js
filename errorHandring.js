@@ -7,11 +7,11 @@ function parseJSONAsync(json, callback) {
       callback(JSON.parse(json));
     }, 1000);
   } catch (err) {
-    console.error("エラーをキャッチ", err); // 表示されない
+    console.error('エラーをキャッチ', err); // 表示されない
     callback({});
   }
 }
-parseJSONAsync("不正なJSON", (result) => console.log("parse結果", result));
+parseJSONAsync('不正なJSON', (result) => console.log('parse結果', result));
 // undefined
 // > Uncaught SyntaxError: Unexpected token 不 in JSON at position 0
 
@@ -26,8 +26,8 @@ function parseJSONAsync(json, callback) {
     }
   }, 1000);
 }
-parseJSONAsync("不正なJSON", (err, result) =>
-  console.log("parse結果", err, result)
+parseJSONAsync('不正なJSON', (err, result) =>
+  console.log('parse結果', err, result)
 );
 
 // コールバックの呼び出し方が同期か非同期かで一貫性がないと、API の挙動が予期 しづらくなってしまいます
@@ -48,18 +48,18 @@ function parseJSONAsyncWithCache(json, callback) {
 parseJSONAsyncWithCache(
   '{"message": "Hello", "to": "World"}',
   (err, result) => {
-    console.log("1回目の結果", err, result);
+    console.log('1回目の結果', err, result);
     // コールバックの中で2回目を実行
     parseJSONAsyncWithCache(
       '{"message": "Hello", "to": "World"}',
       (err, result) => {
-        console.log("2回目の結果", err, result);
+        console.log('2回目の結果', err, result);
       }
     );
-    console.log("2回目の呼び出し完了");
+    console.log('2回目の呼び出し完了');
   }
 );
-console.log("1回目の呼び出し完了");
+console.log('1回目の呼び出し完了');
 // 1回目の呼び出し完了
 // undefined
 // > 1回目の結果 null { message: 'Hello', to: 'World' }
@@ -84,18 +84,18 @@ function parseJSONAsyncWithCache(json, callback) {
 parseJSONAsyncWithCache(
   '{"message": "Hello", "to": "World"}',
   (err, result) => {
-    console.log("1回目の結果", err, result);
+    console.log('1回目の結果', err, result);
     // コールバックの中で2回目を実行
     parseJSONAsyncWithCache(
       '{"message": "Hello", "to": "World"}',
       (err, result) => {
-        console.log("2回目の結果", err, result);
+        console.log('2回目の結果', err, result);
       }
     );
-    console.log("2回目の呼び出し完了");
+    console.log('2回目の呼び出し完了');
   }
 );
-console.log("1回目の呼び出し完了");
+console.log('1回目の呼び出し完了');
 // 1回目の呼び出し完了
 // undefined
 // > 1回目の結果 null { message: 'Hello', to: 'World' }
@@ -125,17 +125,17 @@ function parseJSONAsyncWithCache(json, callback) {
 parseJSONAsyncWithCache(
   '{"message": "Hello", "to": "World"}',
   (err, result) => {
-    console.log("1回目の結果", err, result); // コールバックの中で2回目を実行
+    console.log('1回目の結果', err, result); // コールバックの中で2回目を実行
     parseJSONAsyncWithCache(
       '{"message": "Hello", "to": "World"}',
       (err, result) => {
-        console.log("2回目の結果", err, result);
+        console.log('2回目の結果', err, result);
       }
     );
-    console.log("2回目の呼び出し完了");
+    console.log('2回目の呼び出し完了');
   }
 );
-console.log("1回目の呼び出し完了");
+console.log('1回目の呼び出し完了');
 // 1回目の呼び出し完了
 // undefined
 // > 1回目の結果 null { message: 'Hello', to: 'World' }

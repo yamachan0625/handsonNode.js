@@ -2,12 +2,12 @@
 // Promise インスタンスは settled(fulfilled または rejected)状態になったら、それ以
 //  上状態が遷移しないと述べました。実際に REPL でコードを書いてこのことを確認 しましょう。
 new Promise((resolve, reject) => {
-  resolve("foo"); // ここでPromiseインスタンスがfooで解決されsettled状態になる。Promiseインスタンスは、一度sttled状態になったらそれ以降は状態が変化しない。
-  resolve("bar"); // 無視される
-  reject(new Error("エラーです"));
+  resolve('foo'); // ここでPromiseインスタンスがfooで解決されsettled状態になる。Promiseインスタンスは、一度sttled状態になったらそれ以降は状態が変化しない。
+  resolve('bar'); // 無視される
+  reject(new Error('エラーです'));
 }).then(
-  (result) => console.log("fulfilled", result),
-  (err) => console.log("rejected", err)
+  (result) => console.log('fulfilled', result),
+  (err) => console.log('rejected', err)
 );
 //> fulfilled foo
 
@@ -37,16 +37,16 @@ function parseJSONAsyncWithCache(json) {
 }
 // 動作確認
 parseJSONAsyncWithCache('{"message": "Hello", "to": "World"}')
-  .then((result) => console.log("１回目の結果", result))
+  .then((result) => console.log('１回目の結果', result))
   .then(() => {
     const promise = parseJSONAsyncWithCache(
       '{"message": "Hello", "to": "World"}'
     );
-    console.log("２回目の呼び出し");
+    console.log('２回目の呼び出し');
     return promise;
   })
-  .then((result) => console.log("2かいめの結果", result));
-console.log("１回目の呼び出し");
+  .then((result) => console.log('2かいめの結果', result));
+console.log('１回目の呼び出し');
 // 1回目の呼び出し完了
 // undefined
 // > 1回目の結果 { message: 'Hello', to: 'World' }
@@ -65,16 +65,17 @@ async function asyncSum(promiseArr) {
   let sum = 0;
   const arr = await Promise.allSettled(promiseArr);
   for (const e of arr) {
-    if (e.status === "fulfilled") {
+    if (e.status === 'fulfilled') {
       sum += e.value;
     }
   }
   return sum;
 }
+
 // 動作確認
 asyncSum(
   [1, 2, 3, 4].map((e) =>
-    e % 2 === 0 ? Promise.resolve(e) : Promise.reject(new Error("エラー"))
+    e % 2 === 0 ? Promise.resolve(e) : Promise.reject(new Error('エラー'))
   )
 ).then(console.log);
 // > 6
@@ -82,6 +83,7 @@ asyncSum(
 // 同じ関数を Promise.all() を使って書いてください。
 async function asyncSum2(promiseArr) {
   let sum = 0;
+  // rejectされたエラーを流す
   const arr = await Promise.all(promiseArr.map((e) => e.catch(() => 0)));
   for (const e of arr) {
     sum += e;
@@ -89,9 +91,9 @@ async function asyncSum2(promiseArr) {
   return sum;
 }
 // 動作確認
-asyncSum(
+asyncSum2(
   [1, 2, 3, 4].map((e) =>
-    e % 2 === 0 ? Promise.resolve(e) : Promise.reject(new Error("エラー"))
+    e % 2 === 0 ? Promise.resolve(e) : Promise.reject(new Error('エラー'))
   )
 ).then(console.log);
 // > 6
